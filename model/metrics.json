@@ -1,0 +1,38 @@
+{
+  "dataset": "ISOT Fake/True news (Kaggle), sampled",
+  "articles_total": 10000,
+  "n_train": 8000,
+  "n_test": 2000,
+  "best_model": "Logistic Regression",
+  "models": [
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.981,
+      "precision": 0.9743589743589743,
+      "recall": 0.988,
+      "f1": 0.9811320754716981
+    },
+    {
+      "model": "Naive Bayes",
+      "accuracy": 0.9505,
+      "precision": 0.9518555667001003,
+      "recall": 0.949,
+      "f1": 0.9504256384576866
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.972,
+      "precision": 0.9627450980392157,
+      "recall": 0.982,
+      "f1": 0.9722772277227723
+    }
+  ],
+  "confusion": {
+    "fake_correct": 974,
+    "fake_called_real": 26,
+    "real_called_fake": 12,
+    "real_correct": 988
+  },
+  "cv_accuracy_mean": 0.9785,
+  "cv_accuracy_std": 0.0043703546766824175
+}

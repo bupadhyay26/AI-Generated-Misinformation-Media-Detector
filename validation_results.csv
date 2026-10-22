@@ -1,0 +1,17 @@
+statement,expected,category,predicted,ai_label
+I am unable to attend the class today,NOT NEWS,personal,NOT NEWS,too_short
+Sir I have fever so I cannot come to college tomorrow,NOT NEWS,personal,NOT NEWS,too_short
+Good morning sir I will submit the project on Monday,NOT NEWS,personal,NOT NEWS,too_short
+Can you please send me the assignment,NOT NEWS,personal,NOT NEWS,too_short
+I will be late for the lab session,NOT NEWS,personal,NOT NEWS,too_short
+Please share the notes of yesterday's lecture,NOT NEWS,personal,NOT NEWS,too_short
+I want leave for two days due to personal work,NOT NEWS,personal,NOT NEWS,too_short
+How are you doing today,NOT NEWS,personal,NOT NEWS,too_short
+There is an emergency in Lucknow due to earthquake,FAKE,fake emergency,FAKE,too_short
+All schools in Delhi will remain closed for 15 days due to earthquake,FAKE,fake emergency,REAL,too_short
+Drinking hot water every hour kills coronavirus,FAKE,known hoax,REAL,too_short
+5G towers are spreading the coronavirus,FAKE,known hoax,UNVERIFIED,too_short
+Plastic rice is being sold in Indian markets,FAKE,known hoax,UNVERIFIED,too_short
+NASA has confirmed six days of complete darkness on Earth next month,FAKE,known hoax,REAL,too_short
+Government is giving free laptops to all students click this link to register,FAKE,known hoax,UNVERIFIED,too_short
+Bill Gates put microchips in COVID vaccines to track people,FAKE,known hoax,FAKE,too_short

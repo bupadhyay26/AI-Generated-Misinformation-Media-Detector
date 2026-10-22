@@ -1,0 +1,3 @@
+# Optional API keys. Add your own keys in api_keys.txt (never share them).
+NEWS_API_KEY=
+GOOGLE_FACT_CHECK_API_KEY=

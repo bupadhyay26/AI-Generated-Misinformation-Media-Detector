@@ -1,0 +1,25 @@
+{
+  "architecture": "Small CNN trained from scratch (no pretrained weights)",
+  "device": "cpu",
+  "image_size": 64,
+  "train": 6000,
+  "test": 1200,
+  "best_test_accuracy": 0.83,
+  "precision": 0.7440633245382586,
+  "recall": 0.94,
+  "f1": 0.8306332842415317,
+  "confusion_matrix": [
+    [
+      406,
+      194
+    ],
+    [
+      36,
+      564
+    ]
+  ],
+  "class_to_idx": {
+    "FAKE": 0,
+    "REAL": 1
+  }
+}

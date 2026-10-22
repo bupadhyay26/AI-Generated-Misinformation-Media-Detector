@@ -1,0 +1,24 @@
+{
+  "task": "AI-generated vs human-written text",
+  "samples": 19997,
+  "train": 15997,
+  "test": 4000,
+  "accuracy": 0.993,
+  "precision": 0.9974772956609486,
+  "recall": 0.9885,
+  "f1": 0.9929683576092416,
+  "confusion_matrix": [
+    [
+      1995,
+      5
+    ],
+    [
+      23,
+      1977
+    ]
+  ],
+  "labels": {
+    "0": "HUMAN-WRITTEN",
+    "1": "AI-GENERATED"
+  }
+}
