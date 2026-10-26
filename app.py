@@ -1,4 +1,4 @@
-﻿"""Streamlit app: AI-Generated Misinformation & Media Authenticity Detector."""
+"""Streamlit app: AI-Generated Misinformation & Media Authenticity Detector."""
 import json
 from pathlib import Path
 
@@ -11,37 +11,37 @@ from ai_text_detector import analyze_ai_text
 from media_detector import analyze_image_bytes, analyze_video_bytes
 
 BASE = Path(__file__).parent
-ICON = {"supports": "âœ…", "contradicts": "âŒ", "partial": "ðŸŸ¡", "no_data": "âž–", "error": "âš ï¸", "skipped": "â­ï¸"}
+ICON = {"supports": "✅", "contradicts": "❌", "partial": "🟡", "no_data": "➖", "error": "⚠️", "skipped": "⏭️"}
 
-st.set_page_config(page_title="AI Misinformation Detector", page_icon="ðŸ§ ", layout="wide")
-st.title("ðŸ§  AI-Generated Misinformation & Media Authenticity Detector")
+st.set_page_config(page_title="AI Misinformation Detector", page_icon="🧠", layout="wide")
+st.title("🧠 AI-Generated Misinformation & Media Authenticity Detector")
 st.caption("Text, images and videos are screened using ML signals, external evidence and lightweight media forensics.")
 keys = evidence.load_keys()
 missing_keys = not keys.get("GOOGLE_FACTCHECK_KEY") or not keys.get("NEWSAPI_KEY")
 if missing_keys:
     st.warning(
-        "âš ï¸ **NewsAPI and/or Google Fact Check key not found in `api_keys.txt`.** "
+        "⚠️ **NewsAPI and/or Google Fact Check key not found in `api_keys.txt`.** "
         "Without both keys, most text claims (anything other than earthquake/rain claims) "
         "will show as **UNVERIFIED** instead of REAL/FAKE, because there is no evidence source "
         "to check them against. Add your keys to `api_keys.txt` and restart the app to fix this.",
-        icon="âš ï¸",
+        icon="⚠️",
     )
 
 with st.sidebar:
     st.header("System status")
-    st.write("âœ… TF-IDF + Logistic Regression (existing news model)")
-    st.write("âœ… trained AI-text classifier")
-    st.write("âœ… trained image classifier + forensic signals")
-    st.write("âœ… trained frame-level video screening")
-    st.write("âœ… USGS + Open-Meteo")
-    st.write(("âœ…" if keys.get("GOOGLE_FACTCHECK_KEY") else "âŒ") + " Google Fact Check key")
-    st.write(("âœ…" if keys.get("NEWSAPI_KEY") else "âŒ") + " NewsAPI key")
+    st.write("✅ TF-IDF + Logistic Regression (existing news model)")
+    st.write("✅ trained AI-text classifier")
+    st.write("✅ trained image classifier + forensic signals")
+    st.write("✅ trained frame-level video screening")
+    st.write("✅ USGS + Open-Meteo")
+    st.write(("✅" if keys.get("GOOGLE_FACTCHECK_KEY") else "❌") + " Google Fact Check key")
+    st.write(("✅" if keys.get("NEWSAPI_KEY") else "❌") + " NewsAPI key")
     st.caption("API keys are optional. Evidence features improve when the two free keys are configured.")
     st.divider()
     st.header("Important")
     st.caption("A detector score is a screening signal, not proof of authenticity or authorship. Human review and source verification are still required.")
 
-text_tab, image_tab, video_tab, valid_tab = st.tabs(["ðŸ“ Text / News", "ðŸ–¼ï¸ Image", "ðŸŽ¥ Video", "ðŸ“Š Validation"])
+text_tab, image_tab, video_tab, valid_tab = st.tabs(["📝 Text / News", "🖼️ Image", "🎥 Video", "📊 Validation"])
 
 # ------------------------------- TEXT
 with text_tab:
@@ -60,7 +60,7 @@ with text_tab:
             st.session_state.text_input = sample
     text = st.text_area("Text / claim", key="text_input", height=220)
 
-    if st.button("ðŸ” Analyze Text", type="primary", use_container_width=True) and text.strip():
+    if st.button("🔍 Analyze Text", type="primary", use_container_width=True) and text.strip():
         with st.spinner("Checking evidence and analysing the text..."):
             result = evidence.analyze(text, keys)
             ai = analyze_ai_text(text)
@@ -80,7 +80,7 @@ with text_tab:
         st.subheader("Claim verification evidence")
         for e in result["evidence"]:
             link = f" [Open source]({e['url']})" if e["url"] else ""
-            st.write(f"{ICON[e['status']]} **{e['source']}** â€” {e['detail']}{link}")
+            st.write(f"{ICON[e['status']]} **{e['source']}** — {e['detail']}{link}")
         st.caption("supports = evidence agrees; contradicts = evidence disagrees; unverified = available evidence was insufficient or mixed.")
 
         if ai.get("available"):
@@ -100,23 +100,23 @@ with image_tab:
     img_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png", "webp", "bmp", "tiff"], key="img")
     if img_file is not None:
         st.image(img_file, caption=img_file.name, width=420)
-        if st.button("ðŸ” Analyze Image", type="primary", use_container_width=True):
+        if st.button("🔍 Analyze Image", type="primary", use_container_width=True):
             out = analyze_image_bytes(img_file.getvalue(), img_file.name)
             if not out.get("ok"):
                 st.error(out["error"])
             else:
                 if out["label"] == "AI-GENERATED":
-                    st.error(f"**AI-GENERATED** â€” model confidence {out['confidence']:.0%}")
+                    st.error(f"**AI-GENERATED** — model confidence {out['confidence']:.0%}")
                 else:
-                    st.success(f"**REAL** â€” model confidence {out['confidence']:.0%}")
+                    st.success(f"**REAL** — model confidence {out['confidence']:.0%}")
                 c1, c2, c3, c4 = st.columns(4)
                 c1.metric("Format", out["format"] or "Unknown")
-                c2.metric("Resolution", f"{out['width']} Ã— {out['height']}")
+                c2.metric("Resolution", f"{out['width']} × {out['height']}")
                 c3.metric("AI risk", f"{out['ai_risk']:.0%}")
                 c4.metric("EXIF", "Present" if out["has_exif"] else "Absent")
                 st.subheader("Forensic signals")
                 for s in out["signals"]:
-                    st.write("â€¢ " + s)
+                    st.write("• " + s)
                 st.caption(out["reason"])
 
 # ------------------------------- VIDEO
@@ -126,16 +126,16 @@ with video_tab:
     vid_file = st.file_uploader("Upload MP4, MOV, AVI, MKV or WEBM", type=["mp4", "mov", "avi", "mkv", "webm", "m4v"], key="vid")
     if vid_file is not None:
         st.video(vid_file)
-        if st.button("ðŸ” Analyze Video", type="primary", use_container_width=True):
+        if st.button("🔍 Analyze Video", type="primary", use_container_width=True):
             with st.spinner("Sampling video frames..."):
                 out = analyze_video_bytes(vid_file.getvalue(), vid_file.name, max_frames=8)
             if not out.get("ok"):
                 st.error(out["error"])
             else:
                 if out["label"] == "AI-GENERATED":
-                    st.error(f"**AI-GENERATED / MANIPULATED** â€” model confidence {out['confidence']:.0%}")
+                    st.error(f"**AI-GENERATED / MANIPULATED** — model confidence {out['confidence']:.0%}")
                 else:
-                    st.success(f"**REAL** â€” model confidence {out['confidence']:.0%}")
+                    st.success(f"**REAL** — model confidence {out['confidence']:.0%}")
                 c1, c2, c3, c4 = st.columns(4)
                 c1.metric("Frames checked", out["frames_checked"])
                 c2.metric("Total frames", out["total_frames"])
@@ -154,7 +154,7 @@ with valid_tab:
     mfile = BASE / "model" / "metrics.json"
     if mfile.exists():
         m = json.loads(mfile.read_text())
-        st.write(f"Existing fake-news model: {m['best_model']} | test articles: {m['n_test']} | 5-fold CV: {m['cv_accuracy_mean']:.2%} Â± {m['cv_accuracy_std']:.2%}")
+        st.write(f"Existing fake-news model: {m['best_model']} | test articles: {m['n_test']} | 5-fold CV: {m['cv_accuracy_mean']:.2%} ± {m['cv_accuracy_std']:.2%}")
         st.dataframe(pd.DataFrame(m["models"]).round(4), hide_index=True, use_container_width=True)
         st.caption("These numbers evaluate fake-vs-real news classification, not AI authorship detection.")
 
@@ -178,21 +178,14 @@ with valid_tab:
 
     st.info("For your report/viva, present text factual verification, AI-text screening, image screening and video frame screening as separate signals. Do not claim that a heuristic score proves that a person or AI created a file.")
 
+
 st.markdown(
     """
-    <div style="
-        text-align: center;
-        color: #808495;
-        font-size: 13px;
-        padding: 20px 0 10px 0;
-        border-top: 1px solid rgba(128, 132, 149, 0.25);
-        margin-top: 30px;
-    ">
-        AI Misinformation &amp; Media Detector
-        <br>
+    <div style="text-align:center;color:#808495;font-size:13px;
+                padding:20px 0 10px;border-top:1px solid #444;margin-top:30px">
+        AI Misinformation &amp; Media Detector<br>
         <strong>Developed by Ramdutt Upadhyay</strong>
     </div>
     """,
     unsafe_allow_html=True
 )
-
