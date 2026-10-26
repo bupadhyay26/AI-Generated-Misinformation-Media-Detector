@@ -177,3 +177,21 @@ with valid_tab:
         st.dataframe(res, hide_index=True, use_container_width=True)
 
     st.info("For your report/viva, present text factual verification, AI-text screening, image screening and video frame screening as separate signals. Do not claim that a heuristic score proves that a person or AI created a file.")
+
+st.markdown(
+    """
+    <div style="
+        text-align: center;
+        color: #808495;
+        font-size: 13px;
+        padding: 20px 0 10px 0;
+        border-top: 1px solid rgba(128, 132, 149, 0.25);
+        margin-top: 30px;
+    ">
+        AI Misinformation &amp; Media Detector
+        <br>
+        <strong>Developed by Ramdutt Upadhyay</strong>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
