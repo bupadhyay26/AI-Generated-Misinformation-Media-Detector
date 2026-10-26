@@ -32,20 +32,40 @@ def _ev(source, status, detail, url=""):
 
 
 def load_keys():
-    """Reads api_keys.txt (lines like NEWSAPI_KEY=abc). Environment variables also work."""
+    """Load API keys from local file, Streamlit Secrets, or environment variables."""
     keys = {}
+
+    # 1. Read local api_keys.txt, if available
     if KEYS_FILE.exists():
-        for line in KEYS_FILE.read_text(encoding="utf-8", errors="ignore").splitlines():
+        for line in KEYS_FILE.read_text(
+            encoding="utf-8", errors="ignore"
+        ).splitlines():
             if "=" in line and not line.strip().startswith("#"):
                 name, value = line.split("=", 1)
                 if value.strip():
                     keys[name.strip()] = value.strip()
+
+    # 2. Read Streamlit Community Cloud Secrets
+    try:
+        import streamlit as st
+
+        for name in ("NEWSAPI_KEY", "GOOGLE_FACTCHECK_KEY"):
+            if not keys.get(name):
+                try:
+                    value = st.secrets.get(name, "")
+                    if value:
+                        keys[name] = str(value).strip()
+                except Exception:
+                    pass
+    except ImportError:
+        pass
+
+    # 3. Read environment variables as a fallback
     for name in ("NEWSAPI_KEY", "GOOGLE_FACTCHECK_KEY"):
-        if name not in keys and os.environ.get(name):
-            keys[name] = os.environ[name]
+        if not keys.get(name) and os.environ.get(name):
+            keys[name] = os.environ[name].strip()
+
     return keys
-
-
 # ---------------------------------------------------------------- place -> coordinates
 def find_place(text):
     """Open-Meteo geocoding: 'lucknow' -> ((26.84, 80.94, 'Lucknow, India'), None).
