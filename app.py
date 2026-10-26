@@ -13,8 +13,8 @@ from media_detector import analyze_image_bytes, analyze_video_bytes
 BASE = Path(__file__).parent
 ICON = {"supports": "✅", "contradicts": "❌", "partial": "🟡", "no_data": "➖", "error": "⚠️", "skipped": "⏭️"}
 
-st.set_page_config(page_title="AI Misinformation Detector", page_icon="🧠", layout="wide")
-st.title("🧠 AI-Generated Misinformation & Media Authenticity Detector")
+st.set_page_config(page_title="AI Misinformation Detector", page_icon="🛡️", layout="wide")
+st.title("🛡️ AI-Generated Misinformation & Media Authenticity Detector")
 st.caption("Text, images and videos are screened using ML signals, external evidence and lightweight media forensics.")
 keys = evidence.load_keys()
 missing_keys = not keys.get("GOOGLE_FACTCHECK_KEY") or not keys.get("NEWSAPI_KEY")
